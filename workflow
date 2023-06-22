@@ -1,14 +1,14 @@
 #!/bin/bash
 
 #source all functions
-source ~/workflow/create_files.sh
-source ~/workflow/help.sh
-source ~/workflow/publish.sh
+source ~/workflow/aux.sh
 
 # define flag variables
 rmarkdown_flag=false
 markdown_name=""
 public_flag=false
+public_name=""
+
 
 # Parse command-line options
 while [[ $# -gt 0 ]]; do
@@ -26,15 +26,18 @@ while [[ $# -gt 0 ]]; do
         -r|--rmarkdown)
             rmarkdown_flag=true
             shift
+            if [[ $# -gt 0 && ! $1 =~ ^-[^-] ]]; then
+                markdown_name="$1"
+                shift
+            fi
             ;;
-        -n|--name)
-            shift
-            markdown_name="$1"
-            shift
-            ;;
-        -p|--publish)
+       -p|--public)
             public_flag=true
             shift
+            if [[ $# -gt 0 && ! $1 =~ ^-[^-] ]]; then
+                public_name="$1"
+                shift
+            fi
             ;;
         *)
             # Unknown option
@@ -78,17 +81,16 @@ if [ "$rmarkdown_flag" != true ] && [ "$public_flag" != true ]; then
 
 fi
 
+##########################
 # Create R Markdown script if the flag is set
+##########################
 if [ "$rmarkdown_flag" = true ]; then
-        rmd_file="./analysis/${markdown_name:-script}.Rmd"
-        create_rmarkdown_script
-fi
-
-        
+    execute_in_workflow_project create_rmarkdown_script
+fi      
 
 ##########################
 # Move all html documents#
 ##########################
 if [ "$public_flag" == true ]; then
-    publish_html
+    execute_in_workflow_project publish_html
 fi
