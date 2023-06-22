@@ -185,7 +185,9 @@ create_yml_lab(){
 setup_git(){
     
     # Clone Git repository
+    echo "# testest" >> README.md
     git init
+   
 
     # Create .gitignore file and add data + output folders
     echo "data/" > .gitignore
@@ -193,10 +195,11 @@ setup_git(){
     echo "figures/" >> .gitignore
 
     # Commit and push .gitignore
-    git add .gitignore
-    git commit -m "Add .gitignore"
+    git add .
+    git commit -m "first commit"
+    git branch -M main
     git remote add origin $repository_url
-    git push 
+    git push -u origin main
 }
 
 create_index(){
