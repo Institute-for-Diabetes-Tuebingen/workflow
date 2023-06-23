@@ -63,13 +63,15 @@ if [ "$rmarkdown_flag" != true ] && [ "$public_flag" != true ]; then
        mkdir public
        outdir="public"
        create_yml_lab
+       setup_gitlab
     else
         mkdir docs
         outdir="docs"
+        setup_github
     fi
 
     # sets up the git repository and pushes the first files
-    setup_git
+    #setup_git
     #this file specifies the layout of the rmarkdown situation
     create_yaml
     create_index

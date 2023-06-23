@@ -182,10 +182,10 @@ create_yml_lab(){
 
 }
 
-setup_git(){
+setup_github(){
     
     # Clone Git repository
-    echo "# testest" >> README.md
+    echo "# $project_name" >> README.md
     git init
    
 
@@ -200,6 +200,23 @@ setup_git(){
     git branch -M main
     git remote add origin $repository_url
     git push -u origin main
+}
+
+setup_gitlab(){
+    # Clone Git repository
+    echo "# $project_name" >> README.md
+   
+
+    # Create .gitignore file and add data + output folders
+    echo "data/" > .gitignore
+    echo "output/" >> .gitignore
+    echo "figures/" >> .gitignore
+
+    git init --initial-branch=main
+    git remote add origin  $repository_url
+    git add .
+    git commit -m "Initial commit"
+    git push --set-upstream origin main
 }
 
 create_index(){
