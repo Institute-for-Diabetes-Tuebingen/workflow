@@ -66,11 +66,17 @@ publish_html() {
     if [ -n "$public_name" ]; then
         # Knit a specific public document
         Rscript -e "rmarkdown::render('$source_directory/$public_name.Rmd', output_file = '$target_folder/$public_name.html')"
+        rm -r $search_dir"/figures"/$public_name"_files/"
+        mv -f $target_folder/$public_name"_files" $search_dir"/figures"
+        rm $target_folder/*.md
     else
         # Knit all public .Rmd documents
         for file in "$source_directory"/*.Rmd; do
             base_name=$(basename "$file" .Rmd)
             Rscript -e "rmarkdown::render('$file', output_file = '$target_folder/$base_name.html')"
+            rm -r $search_dir"/figures"/$base_name"_files/"
+            mv $target_folder/$base_name"_files" $search_dir"/figures"
+            rm $target_folder/*.md
         done
     fi
 
